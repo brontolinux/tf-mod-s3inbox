@@ -8,9 +8,9 @@ variable "bucket_name" {
   type        = string
 }
 
-variable "ignore_public_acls" {
-  description = "Should be always set to true, but you may need to set it to false temporarily to update the bucket policy"
-  default     = true
+variable "allow_policy_change" {
+  description = "Should be always set to false, but you may need to set it to true temporarily before changing the bucket policy"
+  default     = false
 }
 
 variable "disable_uploads" {
