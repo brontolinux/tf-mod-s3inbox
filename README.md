@@ -41,13 +41,21 @@ Type: `list`
 
 The following input variables are optional (have default values):
 
-### ignore_public_acls
+### allow_policy_change
 
-Description: Should be always set to true, but you may need to set it to false temporarily to update the bucket policy
+Description: Should be always set to false, but you may need to set it to true temporarily before changing the bucket policy
 
 Type: `bool`
 
-Default: `true`
+Default: `false`
+
+### disable_uploads
+
+Description: Update the bucket policy to disable uploads (useful to share data but prevent new uploads in the inbox)
+
+Type: `bool`
+
+Default: `false`
 
 ### region
 

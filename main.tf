@@ -21,12 +21,14 @@ provider "aws" {
 }
 
 locals {
-  id          = module.inbox.this_s3_bucket_id
-  arn         = module.inbox.this_s3_bucket_arn
-  domain_name = module.inbox.this_s3_bucket_bucket_regional_domain_name
-  region      = module.inbox.this_s3_bucket_region
-  website     = "http://${module.inbox.this_s3_bucket_website_endpoint}"
-  s3_endpoint = "https://${local.domain_name}"
+  id           = module.inbox.this_s3_bucket_id
+  arn          = module.inbox.this_s3_bucket_arn
+  domain_name  = module.inbox.this_s3_bucket_bucket_regional_domain_name
+  region       = module.inbox.this_s3_bucket_region
+  website      = "http://${module.inbox.this_s3_bucket_website_endpoint}"
+  s3_endpoint  = "https://${local.domain_name}"
+  inbox_policy = var.disable_uploads ? "Deny" : "Allow"
+  tight_acl    = var.allow_policy_change ? false : true
 }
 
 module "inbox" {
@@ -44,8 +46,8 @@ module "inbox" {
   # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block
   # All directives default to false
   block_public_acls       = false
-  block_public_policy     = true
-  ignore_public_acls      = var.ignore_public_acls # set to "true" when done with experiments, "false" may be needed for some changes
+  block_public_policy     = local.tight_acl
+  ignore_public_acls      = local.tight_acl
   restrict_public_buckets = false
 
   attach_policy = true
@@ -102,7 +104,7 @@ data "aws_iam_policy_document" "inbox" {
   }
 
   statement {
-    sid = "AllowAnonymousPutInbox"
+    sid = "${local.inbox_policy}AnonymousPutInbox"
 
     not_principals {
       type        = "AWS"
@@ -118,7 +120,7 @@ data "aws_iam_policy_document" "inbox" {
       "s3:PutObject"
     ]
 
-    effect = "Allow"
+    effect = local.inbox_policy
   }
 
   statement {
