@@ -21,12 +21,13 @@ provider "aws" {
 }
 
 locals {
-  id          = module.inbox.this_s3_bucket_id
-  arn         = module.inbox.this_s3_bucket_arn
-  domain_name = module.inbox.this_s3_bucket_bucket_regional_domain_name
-  region      = module.inbox.this_s3_bucket_region
-  website     = "http://${module.inbox.this_s3_bucket_website_endpoint}"
-  s3_endpoint = "https://${local.domain_name}"
+  id           = module.inbox.this_s3_bucket_id
+  arn          = module.inbox.this_s3_bucket_arn
+  domain_name  = module.inbox.this_s3_bucket_bucket_regional_domain_name
+  region       = module.inbox.this_s3_bucket_region
+  website      = "http://${module.inbox.this_s3_bucket_website_endpoint}"
+  s3_endpoint  = "https://${local.domain_name}"
+  inbox_policy = var.disable_uploads ? "Deny" : "Allow"
 }
 
 module "inbox" {
@@ -102,7 +103,7 @@ data "aws_iam_policy_document" "inbox" {
   }
 
   statement {
-    sid = "AllowAnonymousPutInbox"
+    sid = "${local.inbox_policy}AnonymousPutInbox"
 
     not_principals {
       type        = "AWS"
@@ -118,7 +119,7 @@ data "aws_iam_policy_document" "inbox" {
       "s3:PutObject"
     ]
 
-    effect = "Allow"
+    effect = local.inbox_policy
   }
 
   statement {

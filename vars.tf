@@ -13,6 +13,11 @@ variable "ignore_public_acls" {
   default     = true
 }
 
+variable "disable_uploads" {
+  description = "Update the bucket policy to disable uploads (useful to share data but prevent new uploads in the inbox)"
+  default     = false
+}
+
 variable "website_index_page" {
   description = "Web site index page"
   default     = "index.html"
