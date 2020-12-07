@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.0.2
+
+Same as v2.0.1, but with both README and CHANGELOG updated :blush:
+
+## v2.0.1
+
+Added a requirement for terraform 0.13 or higher
+
 ## v2.0.0
 
 **WARNING: imcompatible changes**

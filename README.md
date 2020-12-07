@@ -13,6 +13,8 @@ If, despite the warning, you decide to keep your inbox around, **you take full r
 
 The following requirements are needed by this module:
 
+- terraform (>= 0.13)
+
 - aws (~> 3.15.0)
 
 ## Providers
